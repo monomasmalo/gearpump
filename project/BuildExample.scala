@@ -136,6 +136,17 @@ object BuildExample extends sbt.Build {
         )
   ) dependsOn(streaming % "test->test; provided", external_kafka)
 
+  lazy val examples_kafka09 = Project(
+    id = "gearpump-examples-kafka09",
+    base = file("examples/streaming/kafka09"),
+    settings = commonSettings ++ noPublish ++ myAssemblySettings ++
+      Seq(
+        mainClass in (Compile, packageBin) := Some("io.gearpump.streaming.examples.kafka09.wordcount.KafkaWordCount"),
+        target in assembly := baseDirectory.value.getParentFile.getParentFile / "target" /
+          CrossVersion.binaryScalaVersion(scalaVersion.value)
+      )
+  ) dependsOn(streaming % "test->test; provided", external_kafka09)
+
   lazy val stockcrawler = Project(
     id = "gearpump-examples-stockcrawler",
     base = file("examples/streaming/stockcrawler"),

@@ -31,6 +31,7 @@ import akka.stream.ModuleGraph.Edge
 import akka.stream.gearpump.util.MaterializedValueOps
 import akka.stream.impl.StreamLayout._
 import akka.stream.impl._
+import akka.stream.impl.fusing.GraphStages.MaterializedValueSource
 import akka.stream.{Graph => AkkaGraph}
 
 import scala.collection.mutable

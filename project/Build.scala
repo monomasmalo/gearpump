@@ -33,6 +33,7 @@ object Build extends sbt.Build {
   val upickleVersion = "0.3.4"
   val junitVersion = "4.12"
   val kafkaVersion = "0.8.2.1"
+  val kafkaVersion09 = "0.9.0.0"
   val stormVersion = "0.10.0"
   val slf4jVersion = "1.7.7"
   val gsCollectionsVersion = "6.2.0"
@@ -52,7 +53,7 @@ object Build extends sbt.Build {
   val projectName = "gearpump"
 
   override def projects: Seq[Project] = (super.projects.toList ++ BuildExample.projects.toList
-      ++ Pack.projects.toList).toSeq
+      ++ Pack.projects.toList)
 
 
   val commonSettings = Seq(jacoco.settings:_*) ++ sonatypeSettings ++
@@ -260,6 +261,20 @@ object Build extends sbt.Build {
           "org.apache.kafka" %% "kafka" % kafkaVersion,
           "com.twitter" %% "bijection-core" % bijectionVersion,
           ("org.apache.kafka" %% "kafka" % kafkaVersion classifier("test")) % "test"
+        )
+      )
+  ) dependsOn (streaming % "test->test; provided")
+
+  lazy val external_kafka09 = Project(
+    id = "gearpump-external-kafka09",
+    base = file("external/kafka09"),
+    settings = commonSettings ++
+      Seq(
+        libraryDependencies ++= Seq(
+          "org.apache.kafka" %% "kafka" % kafkaVersion09,
+          "org.apache.kafka" % "kafka-clients" % kafkaVersion09,
+          "com.twitter" %% "bijection-core" % bijectionVersion,
+          ("org.apache.kafka" %% "kafka" % kafkaVersion09 classifier("test")) % "test"
         )
       )
   ) dependsOn (streaming % "test->test; provided")
